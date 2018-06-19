@@ -3,6 +3,7 @@ package org.launchcode.controllers;
 
 import org.launchcode.models.Menu;
 import org.launchcode.models.data.MenuDao;
+import org.launchcode.models.forms.AddMenuItemForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,9 +52,16 @@ public class MenuController {
         }
     @RequestMapping(value="view/{id}", method = RequestMethod.GET)
     public String viewMenu(Model model, @PathVariable("id") int id) {
-        model.addAttribute("title", "View Menu");
+        model.addAttribute("title", menuDao.findOne(id).getName());
         model.addAttribute("menu", menuDao.findOne(id));
 
-        return "view/{id}";
+        return "menu/view";
+    }
+
+    @RequestMapping(value = "add-item/{id}", method = RequestMethod.GET)
+    public String addItem(Model model, @PathVariable("id") int id) {
+        Menu m = menuDao.findOne(id);
+        model.addAttribute(new AddMenuItemForm());
+    return "add-item";
     }
 }
