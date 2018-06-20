@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -34,15 +31,6 @@ public class CheeseController {
 
         model.addAttribute("cheeses", cheeseDao.findAll());
         model.addAttribute("title", "My Cheeses");
-
-        return "cheese/index";
-    }
-
-    //this is a bonus mission for part 2... the issue is the cheeseDao findby; needs work
-    @RequestMapping(value = "category/{categoryId}")
-    public String category(Model model, @RequestParam int categoryId) {
-        model.addAttribute("title", "Cheese by Category");
-        //model.addAttribute("cheeses", cheeseDao.findByOne(categoryId));
 
         return "cheese/index";
     }
@@ -84,6 +72,15 @@ public class CheeseController {
         }
 
         return "redirect:";
+    }
+
+    @RequestMapping(value= "category/{categoryId}", method = RequestMethod.GET)
+    public String displayByCategory(@PathVariable("categoryId") int categoryId, Model model) {
+
+        model.addAttribute("title", "Cheeses by Category");
+        model.addAttribute("cheeses", cheeseDao.findByCategory_Id(categoryId));
+
+        return "cheese/index";
     }
 
 }

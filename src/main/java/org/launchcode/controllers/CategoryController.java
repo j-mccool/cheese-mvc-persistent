@@ -22,7 +22,7 @@ public class CategoryController {
     // Request path: /category
     @RequestMapping(value="")
     public String index(Model model) {
-        model.addAttribute("category", categoryDao.findAll());
+        model.addAttribute("categories", categoryDao.findAll());
         model.addAttribute("title", "Categories");
 
         return "/category/index";
