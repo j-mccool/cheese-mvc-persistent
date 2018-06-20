@@ -7,13 +7,15 @@
 <h1 th:text="${title}">Default Title</h1>
 
 <nav th:replace="fragments :: navigation"></nav>
-<a href="/category/add">Add Category</a>
+
+<a href="/category/add">Add Category</a> | <a href="/category/remove">Remove Category</a>
 
 <p th:unless="${categories} and ${categories.size()}">No Categories :(</p>
 
 <ul class="list-group" th:each="category : ${categories}">
     <li class="list-group-item" th:text="${category.name}"></li>
 </ul>
+
 
 </body>
 </html>
