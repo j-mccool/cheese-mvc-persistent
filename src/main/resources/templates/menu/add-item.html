@@ -6,10 +6,10 @@
 
         <nav th:replace="fragments :: navigation"></nav>
 
-        <form th:object="${form}" method="post" style="max-width:600px;">
+        <form th:object="${form}" method="post" style="max-width:600px;" action="/menu/add-item">
             <div class="form-group">
                 <label th:for="cheeseId">Cheese</label>
-                <select th:field="*{cheeseId}">
+                <select name="cheeseId">
                     <option th:each="cheese : *{cheeses}"
                             th:value="${cheese.id}"
                             th:text="${cheese.name}"></option>
@@ -18,7 +18,7 @@
                 <span th:errors="*{cheeseId}" class="error"></span>
             </div>
 
-            <input type="submit" value="Add Cheese" />
+            <input type="submit" value="Add Item" />
         </form>
 
     </body>

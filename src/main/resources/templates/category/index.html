@@ -8,14 +8,14 @@
 
 <nav th:replace="fragments :: navigation"></nav>
 
-<a href="/category/add">Add Category</a> | <a href="/category/remove">Remove Category</a>
 
 <p th:unless="${categories} and ${categories.size()}">No Categories :(</p>
 
 <ul class="list-group" th:each="category : ${categories}">
-    <li class="list-group-item" th:text="${category.name}"></li>
+    <a th:href="@{'/cheese/category/' + ${category.id}}"><li class="list-group-item" th:text="${category.name}"></li></a>
 </ul>
 
+<a class="links" href="/category/add">Add Category</a> | <a href="/category/remove">Remove Category</a>
 
 </body>
 </html>

@@ -3,5 +3,11 @@ body {
 }
 
 nav {
+    margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.links {
+    margin: 10px;
+    border: 1px;
 }

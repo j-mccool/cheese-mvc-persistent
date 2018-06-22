@@ -2,6 +2,7 @@ package org.launchcode.controllers;
 
 import org.launchcode.models.Category;
 import org.launchcode.models.data.CategoryDao;
+import org.launchcode.models.data.CheeseDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +21,11 @@ public class CategoryController {
     @Autowired
     private CategoryDao categoryDao;
 
+    @Autowired
+    private CheeseDao cheeseDao;
+
     // Request path: /category
-    @RequestMapping(value="")
+    @RequestMapping(value = "")
     public String index(Model model) {
         model.addAttribute("categories", categoryDao.findAll());
         model.addAttribute("title", "Categories");
@@ -29,15 +33,16 @@ public class CategoryController {
         return "/category/index";
     }
 
-    @RequestMapping(value="add", method = RequestMethod.GET)
+    @RequestMapping(value = "add", method = RequestMethod.GET)
     public String displayAddCategoryForm(Model model) {
         model.addAttribute("title", "Add Category");
         model.addAttribute(new Category());
 
+
         return "category/add";
     }
 
-    @RequestMapping(value="add", method = RequestMethod.POST)
+    @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAddCategoryForm(Model model, @ModelAttribute @Valid Category newCategory, Errors errors) {
 
         if (errors.hasErrors()) {
@@ -58,11 +63,17 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "remove", method = RequestMethod.POST)
-    public String processRemoveCategoryForm(@RequestParam int[] categoryIds) {
+    public String processRemoveCategoryForm(Model model, @RequestParam int[] categoryIds) {
         for (int categoryId : categoryIds) {
-            categoryDao.delete(categoryId);
+            if (cheeseDao.findByCategory_Id(categoryId).isEmpty()) {
+                categoryDao.delete(categoryId);
 
+                return "redirect:";
+            } else {
+                model.addAttribute("error", "This category has cheeses! Please remove those cheeses first!");
+                return "category/remove";
+            }
         }
-        return "redirect:";
+            return "redirect:";
     }
 }
