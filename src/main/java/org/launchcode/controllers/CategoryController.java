@@ -1,8 +1,11 @@
 package org.launchcode.controllers;
 
 import org.launchcode.models.Category;
+import org.launchcode.models.Cheese;
+import org.launchcode.models.Menu;
 import org.launchcode.models.data.CategoryDao;
 import org.launchcode.models.data.CheeseDao;
+import org.launchcode.models.data.MenuDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("category")
@@ -23,6 +27,9 @@ public class CategoryController {
 
     @Autowired
     private CheeseDao cheeseDao;
+
+    @Autowired
+    private MenuDao menuDao;
 
     // Request path: /category
     @RequestMapping(value = "")
@@ -64,12 +71,23 @@ public class CategoryController {
 
     @RequestMapping(value = "remove", method = RequestMethod.POST)
     public String processRemoveCategoryForm(Model model, @RequestParam int[] categoryIds) {
-  
+
+        Iterable<Menu> m = menuDao.findAll();
+
+
         for (int categoryId : categoryIds) {
-            categoryDao.delete(categoryId);
+            for (Menu i : m) {
+                List<Cheese> c = i.getCheeses();
+                for (Cheese x : c) {
+                    if(x.getCategory().equals(categoryDao.findOne(categoryId))){
+                        i.removeItem(x);
+                    }
+                }
+            }
+        categoryDao.delete(categoryId);
         }
 
-        return "redirect:";
+        return "redirect:/cheese";
 
     }
 }
