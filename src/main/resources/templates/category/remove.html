@@ -12,7 +12,6 @@
     <div th:each="category : ${categories}" class="checkbox">
         <input type="checkbox" name="categoryIds" th:value="${category.id}" th:id="${category.id}"/>
         <label th:for="${category.id}" th:text="${category.name}"></label>
-        <span th:text="${error}" class="error"></span>
         <br />
     </div>
 

@@ -64,16 +64,12 @@ public class CategoryController {
 
     @RequestMapping(value = "remove", method = RequestMethod.POST)
     public String processRemoveCategoryForm(Model model, @RequestParam int[] categoryIds) {
+  
         for (int categoryId : categoryIds) {
-            if (cheeseDao.findByCategory_Id(categoryId).isEmpty()) {
-                categoryDao.delete(categoryId);
-
-                return "redirect:";
-            } else {
-                model.addAttribute("error", "This category has cheeses! Please remove those cheeses first!");
-                return "category/remove";
-            }
+            categoryDao.delete(categoryId);
         }
-            return "redirect:";
+
+        return "redirect:";
+
     }
 }
